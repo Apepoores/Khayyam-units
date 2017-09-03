@@ -1,2 +1,2 @@
 # Khayyam-units
-Automatic unit selecting
+A program for Khayyam university which does the unit selecting automatically
