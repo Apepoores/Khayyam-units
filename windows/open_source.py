@@ -6,6 +6,7 @@ import tkinter as tk
 from tkinter import *
 import time
 from bs4 import BeautifulSoup
+from multiprocessing import Queue
 
 from tkinter import messagebox
 
@@ -465,6 +466,7 @@ class GUI(Page):
         self.flagstopButton = 1
         self.stop.config(state = "disabled")
         self.start.config(state = "normal")
+        self.log("Selecting units is stopped!")
 
 
 
@@ -477,14 +479,14 @@ class GUI(Page):
 
 
     def deleteLesson(self):
-        config_file = open("config.cfg","r") # open file and read file if finde id pass id and contnue
+        config_file = open("config.cfg","r",encoding="UTF-8") # open file and read file if finde id pass id and contnue
         text = ""
         data = self.list_box.get(self.list_box.curselection())
         for line in config_file:
-            if(data[::-1] not in line):
+            if(data not in line):
                 text+=line
         config_file.close()
-        config_file = open("config.cfg","w")
+        config_file = open("config.cfg","w",encoding="UTF-8")
         config_file.write(text)
         config_file.close()
         self.log("lesson deleted successfully")
