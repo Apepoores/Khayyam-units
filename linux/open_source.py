@@ -469,7 +469,7 @@ class GUI(Page):
         self.flagstopButton = 1
         self.stop.config(state = "disabled")
         self.start.config(state = "normal")
-
+        self.log("Selecting units is stopped!")
 
 
     def addLesson(self):
