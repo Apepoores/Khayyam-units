@@ -23,11 +23,15 @@ if you are using any platform other than windows or if you are a developer you c
  ```
  on your terminal.
 ### 2. Login with your university information (username and password)
-After running the program you need to enter your university account information. Be sure to enter the correct information (the website will block you for a few mintues in case of repeatedly wrong password and our program can't do anything about that).
+After running the program you need to enter your university account information. Be sure to enter the correct information (the website will block you for a few mintues in case of repeatedly wrong password and our program can't do anything about that).  
+![login](http://apep.ir/importent/1.jpg)
 ### 3. Add your lessons ID and group
+![adding lessons ID and group](http://apep.ir/importent/2.jpg)  
 You need to simply enter your desired lessons ID and group once and our program will remember them for later usages.
 ### 4. Set the timer and hit the start
+![setting timer](http://apep.ir/importent/3.jpg)
 You will have to set the timer before you hit the start button. This timer will tell our program how many hours it should wait before trying to select the units. It means if you leave it 0 the program will start the unit selecting process as soon as you touch the start button (in other words, if you fill this field with number x, the unit selecting will start x hours after you click on start).
+![start](http://apep.ir/importent/4.jpg)
 ## Is it safe?
 We guarantee our program to be **100%** safe to use, but the source code is available and you can check the program.
 
