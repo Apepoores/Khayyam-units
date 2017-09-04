@@ -175,7 +175,7 @@ class connection():
         if len(lesIDs) == len(lesGroups) and self.isLoggedIn() == 1:
             try:
                 body = self._generateSelectionHeader(lesIDs, lesGroups)
-                request = self.session.post(url, data="AddIt[]=0&LsnNo[]=5451308&LsnGrp[]=1&", headers=self.headers, cookies= self.session.cookies)
+                request = self.session.post(url, data=body, headers=self.headers, cookies= self.session.cookies)
                 return self._selectionResult(request.text)
             except:
                 return 0
