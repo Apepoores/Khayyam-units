@@ -1,4 +1,4 @@
-#Khayyam Units 0.2 Beta
+# Khayyam Units 0.2 Beta
 
 ## What is Khayyam units
 It's a program written in python which aims to automate the selecting units of khayyam university. It can be used for all students of all majors.
