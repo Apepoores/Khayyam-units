@@ -32,10 +32,11 @@ You will have to set the timer before you hit the start button. This timer will 
 We guarantee our program to be **100%** safe to use, but the source code is available and you can check the program.
 
 ## Contact us
-our program is on beta mode still. We will be happy if you could send us your opinions/report bugs.
-- Amir Sajjad Poursoltani
-Email: sajjadpooresq [at] gmail [dot] com
-Telegram: @sajjadpoores
-- Arsham Mohammadi Neyshaboury
-Email: arshammoh1998 [at] gmail [dot] com
+our program is on beta mode still. We will be happy if you could send us your opinions/report bugs.  
+- Amir Sajjad Poursoltani  
+Email: sajjadpooresq [at] gmail [dot] com  
+Telegram: @sajjadpoores  
+  
+- Arsham Mohammadi Neyshaboury  
+Email: arshammoh1998 [at] gmail [dot] com  
 Telegram: @Apep_19989
