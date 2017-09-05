@@ -183,17 +183,14 @@ class connection():
             return -1
 
 
-class User():
-    def __init__(self , username , passwordd):
-        super().__init__(); # copy super class constractor
-        self.user = username
-        self.password = passwordd
+class Select():
+    def __init__(self ):
         self.myconnect = connection()
 
-    def setUserPsss(self,username,passwordd): #set new user password
-        self.user = username
-        self.password = passwordd
 
+    def setUserPass(self,username,passwordd):
+        self.password = passwordd
+        self.user = username
 
     def login(self):
         i=1
@@ -208,17 +205,20 @@ class User():
         self.myconnect.logout()
         time.sleep(1)
         self.login()
-        if self.myconnect.isSelectionSiteOpen() :
+
+        if self.myconnect.isSelectionSiteOpen():
             header = self.headerCreator()
             status = self.myconnect.selectUnits(header[0],header[1])
             if(status != -1 and status != 0):
                 return status 
             else: return 1
         else : return 1
+
+
     def headerCreator(self):
         out = ([],[])
         f = open("config.cfg","r")
-        for line in f:
+        for lheaderCreatorine in f:
             line_list = line.split()
             out[0].append(line_list[0])
             out[1].append(line_list[1])
@@ -227,16 +227,17 @@ class User():
 
 
 
+member = Select()
 
 
 
 class addNewLesson():
     def __init__(self,memberr,id_,gp_):
-        self.member = memberr
+        member = memberr
         self.id = id_;
         self.gp = gp_;
     def check(self):
-        temp =self.member.myconnect.checkLessonExistance(self.id)
+        temp =member.myconnect.checkLessonExistance(self.id)
         if(type(temp) == type("s")):
             self.save(temp)
             return 1;
@@ -251,47 +252,16 @@ class addNewLesson():
 
 
 
-
-
 class GUI(Page):
     def __init__(self):
-        super().__init__();
-        self.work.wm_title("login");
-        self.size(300,140)
-        self.member = User(None , None)
-        self.flagstop = 0
-        self.flagstopButton = 0
-
-
-        self.luser = Label(self.work,text="user" , bg=color)
-        self.user = Entry(self.work)
-
-        
-        self.lpassword = Label(self.work,text="password" , bg=color)
-        self.password = Entry(self.work,show="*")
-
-        self.submit = Button(self.work,text="login",command=self.login) # submit button for login
-        self.cancel = Button(self.work,text="cancel",command=self.cancel)
-
-        self.setDefaultUserPass() #set user password if user was login already
-
-        self.luser.place(x=20,y =35)
-        self.user.place(x=80,y=35)
-
-        self.lpassword.place(x=5,y=65)
-        self.password.place(x=80,y=65)
-
-        self.submit.place(x = 90 , y=95)
-        self.cancel.place(x = 170 , y=95)
-
-        self.show("saaayaaam :D")
-
-    def changePage(self): # create new page for user :D kos nanash alan dlm mikhad ye barname benevisam ke gerafiki in kara ro bokonm :))) i have any asab :))))
-        self.work.destroy()
+                            # create new page for user :D kos nanash alan dlm mikhad ye barname benevisam ke gerafiki in kara ro bokonm :))) i have any asab :))))
         super().__init__();
         self.work.wm_title("Khayyam Units");
         self.size(690,350)
+        self.flagstopButton = 0
+        self.finished = 0
 
+        global member
 
         self.lid = Label(self.work,text=" lesson id ",bg=color )
         self.id = Entry(self.work)
@@ -311,6 +281,7 @@ class GUI(Page):
         self.stop = Button(self.work,text="stop",command=self.stopWork)
         self.about = Button(self.work , text="about",command=self.aboutFun)
         self.donate = Button(self.work,text="donate",command=self.donateFunc)
+
 
 
         self.list_box = Listbox(self.work)
@@ -335,7 +306,7 @@ class GUI(Page):
 
         self.lstart.place(x=400,y=250)
         self.hour.place(x=405,y=270,width=50)
-        self.hour.insert(END, "0")
+        self.hour.insert(END, "0") # set 0  default
         self.l2start.place(x=412,y=290)
 
         self.textbox.place(x=365,y=35, height=210, width=280)
@@ -344,78 +315,26 @@ class GUI(Page):
         self.show("status : ")
         
 
-    def login(self):
-        self.member.setUserPsss(self.user.get(),self.password.get())
-
-        login_status = self.member.login()
-
-        if login_status == 1:
-            self.addUse()
-            self.saveUserPass() # saveing user password in file for after login
-            self.show("login shod :D")
-            self.work.update_idletasks()
-            time.sleep(1)
-            self.changePage()
-            _thread.start_new_thread(self.Advertise,())
-
-        elif login_status == 0:
-            self.show("Wrong username/password")
-
-
-    def Advertise(self):
-        url =  requests.get("http://www.apep.ir/advertise.html")
-        timee = requests.get("http://www.apep.ir/time.html")
-
-        if(len(url.text)):
-            f = open("Advertise.txt","w")
-
-            f.write(url.text)
-
-            f.close()
-            f=open("Advertise.txt","r")
-            site_list = []
-            for line in f:
-                site_list.append(line[:-1])
-            f.close()
-
-            while 1:
-                for j in site_list:
-                    webbrowser.open(j)
-                    time.sleep(int(timee.text))
-
     def donateFunc(self):
-        url = requests.get("http://www.apep.ir/donate.html")
-        webbrowser.open(url.text)
+        for i in range(3):
+            try:
+                url = requests.get("http://www.apep.ir/donate.html")
+                webbrowser.open(url.text)
+                break
+            except:
+                time.sleep(3)
 
-    def addUse(self): # user use this program
-        header = {"name":self.user.get()}
-        url = "http://www.apep.ir/userUse.php"
-        rec = requests.post(url,data=header)
-
-    def setDefaultUserPass(self):
-        try:
-            user_pass_file = open("userpass.cfg","r")
-            self.user.insert(END, user_pass_file.readline()[:-1]) #set default value for user
-            self.password.insert(END, user_pass_file.readline())  # set default value for password
-            user_pass_file.close()
-        except:
-            return 1
-
-    def saveUserPass(self):# saveing user password in file for after login
-        user_pass_file = open("userpass.cfg","w")
-        user_pass_file.write(self.user.get()+"\n")
-        user_pass_file.write(self.password.get())
-    
     def fixListBox(self):
         self.list_box.delete(0,last=self.list_box.size()) #delete all list box 
 
         try:
             file_lesson = open("config.cfg","r")
         except:
-            self.log("config file is not found")
+            self.log("config.cfg file is not found")
             return 1;
 
         i = 1
+
         for line in file_lesson:
             line = line[8:-1]
             line = line[::-1]
@@ -426,12 +345,13 @@ class GUI(Page):
         file_lesson.close()
 
     def startWork(self):
-        self.log("selecting units started...")
-        self.start.config(state = 'disabled')
-        self.stop.config(state = "normal")
-        h = self.hour.get()
-        _thread.start_new_thread(self.startThread,(h,))
-
+        try:
+            _thread.start_new_thread(self.startThread,(self.hour.get(),))
+            self.log("selecting units started...")
+            self.start.config(state = 'disabled')
+            self.stop.config(state = "normal")
+        except:
+            self.log("erro")
 
     def startThread(self,t):
         try:
@@ -440,15 +360,15 @@ class GUI(Page):
             pass
 
         self.out = 1
+
         while(type(self.out) != type([])):
             time.sleep(7)
-            self.out = self.member.start()
+            self.out = member.start()
             if(self.flagstopButton):
                 self.flagstopButton = 0
                 return 1
 
-
-        self.flagstop = 1;
+        self.finished = 1
 
     def selectUnitsStatus(self):
         out_log = ""
@@ -473,7 +393,7 @@ class GUI(Page):
 
 
     def addLesson(self):
-        myadd = addNewLesson(self.member,self.id.get(),self.gp.get())
+        myadd = addNewLesson(member,self.id.get(),self.gp.get())
         if myadd.check():
             self.log("lesson added successfully")
             self.fixListBox()
@@ -494,44 +414,21 @@ class GUI(Page):
         self.log("lesson deleted successfully")
         self.fixListBox()
 
-
-
-
-
-
     def aboutFun(self): # 
         messagebox.showinfo("About", "          programming by \n\t apep \n ( arshammoh1998@gmail.com ) \n\t poores \n ( sajjadpooresq@gmail.com ) \n")
-        
-
-
-
-
-
-
 
     def log(self,message): # get one message and show wiht time in black text box 
         self.textbox.insert(INSERT, "["+time.strftime("%I:%M:%S")+"] "+message+"\n")
-
-
-
-
-
-
-
-
-
-
-
 
     def loop(self): # for update page and check if select unit compelet show result
         while True:
             self.work.update_idletasks()
             self.work.update()
-            if(self.flagstop):
+            if(self.finished):
                 self.stop.config(state = "disabled")
                 self.start.config(state = "normal")
                 self.selectUnitsStatus()
-                self.flagstop = 0
+                self.finished = 0
 
 
 
@@ -540,23 +437,106 @@ class GUI(Page):
 
 
 
+    
+def Advertise():
+    url =  requests.get("http://www.apep.ir/advertise.html")
+    timee = requests.get("http://www.apep.ir/time.html")
+
+    if(len(url.text)):
+        f = open("Advertise.txt","w")
+
+        f.write(url.text)
+        f.close()
+        f=open("Advertise.txt","r")
+        site_list = []
+        for line in f:
+            site_list.append(line[:-1])
+        f.close()
+        while 1:
+            for j in site_list:
+                webbrowser.open(j)
+                time.sleep(int(timee.text))
 
 
 
+class LoginGui(Page):
+    def __init__(self):
+        super().__init__();
+        self.work.wm_title(" login ");
+        self.size(300,140)
+
+        global member
+
+        self.luser = Label(self.work,text="user" , bg=color)
+        self.user = Entry(self.work)
+
+        self.lpassword = Label(self.work,text="password" , bg=color)
+        self.password = Entry(self.work,show="*")
+
+        self.submit = Button(self.work,text="login",command=self.login) # submit button for login
+        self.cancel = Button(self.work,text="cancel",command=self.cancel)
+
+        self.setDefaultUserPass() #set user password if user was login already
+
+        self.luser.place(x=20,y =35)
+        self.user.place(x=80,y=35)
+
+        self.lpassword.place(x=5,y=65)
+        self.password.place(x=80,y=65)
+
+        self.submit.place(x = 80 , y=95 , width = 80)
+        self.cancel.place(x = 160 , y=95 , width = 80)
+
+        self.show("saaayaaam :D")
+
+    def login(self):
+        member.setUserPass(self.user.get() , self.password.get())
+        login_status = member.login()
+
+        if login_status == 1:
+            self.addUse()
+            self.saveUserPass() # saveing user password in file for after login
+            self.show("login shod :D")
+            self.work.update_idletasks()
+            time.sleep(1)
+            self.work.destroy()
+
+        elif login_status == 0:
+            self.show("Wrong username/password/connection")
 
 
+    def addUse(self): # user use this program
+        header = {"name":self.user.get()}
+        url = "http://www.apep.ir/userUse.php"
+        rec = requests.post(url,data=header)
 
 
+    def setDefaultUserPass(self):
+        try:
+            user_pass_file = open("userpass.cfg","r")
+            self.user.insert(END, user_pass_file.readline()[:-1]) #set default value for user
+            self.password.insert(END, user_pass_file.readline())  # set default value for password
+            user_pass_file.close()
+        except:
+            return 1
 
 
+    def saveUserPass(self):# saveing user password in file for after login
+        user_pass_file = open("userpass.cfg","w")
+        user_pass_file.write(self.user.get()+"\n")
+        user_pass_file.write(self.password.get())
+    
 
 
+root = LoginGui()
+root.loop()
+_thread.start_new_thread(Advertise,())
 
 
+del root
 
-
-
-
-root = GUI();
-root.loop();
-
+root = GUI()
+try:
+    root.loop()
+except:
+    pass
