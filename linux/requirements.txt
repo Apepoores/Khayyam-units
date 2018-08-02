@@ -1,0 +1,10 @@
+arabic-reshaper==2.0.8
+beautifulsoup4==4.6.0
+bs4==0.0.1
+certifi==2017.7.27.1
+chardet==3.0.4
+configparser==3.5.0
+future==0.16.0
+idna==2.6
+requests==2.18.4
+urllib3==1.22
